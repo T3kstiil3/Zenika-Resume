@@ -19,7 +19,7 @@ export default class Editor extends Component {
     this.state = {
       template: 'resume',
       pos: 0,
-      mode: EditorModes.PREVIEW
+      mode: localStorage.getItem('LastEditorModesSet') || EditorModes.PREVIEW
     };
   }
 
@@ -68,6 +68,8 @@ export default class Editor extends Component {
     if (!hasClickedLeft && this.state.mode !== EditorModes.READING) {
       newMode = EditorModes.FOCUS;
     }
+
+    localStorage.setItem('LastEditorModesSet', newMode);
 
     this.updateMode(newMode);
   }
