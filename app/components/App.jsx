@@ -1,5 +1,7 @@
 import Immutable from 'immutable';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import {
   addLocaleData,
   IntlProvider,
@@ -31,6 +33,7 @@ class App extends Component {
       loaded: false,
     };
     this.toggleLocale = this.toggleLocale.bind(this);
+    this.changeTheme = this.changeTheme.bind(this);
     this.updateContent = debounce(this.updateContent, 150);
     this.updateMetadata = debounce(this.updateMetadata, 150);
   }
@@ -197,6 +200,10 @@ class App extends Component {
     });
   }
 
+  changeTheme(theme) {
+    this.updateMetadata(Object.assign({}, this.state.document.metadata, { theme: theme.name }))
+  }
+
   render() {
     let viewMode = '';
     const locale = this.state.userPref.locale;
@@ -327,6 +334,7 @@ class App extends Component {
             version={this.props.version}
             metadata={this.state.document.get('metadata')}
             toggleLocale={this.toggleLocale}
+            changeTheme={this.changeTheme}
             currentLocale={locale}
           />
         </div>
