@@ -333,6 +333,7 @@ class App extends Component {
           <Footer
             version={this.props.version}
             metadata={this.state.document.get('metadata')}
+            path={this.state.document.get('path')}
             toggleLocale={this.toggleLocale}
             changeTheme={this.changeTheme}
             currentLocale={locale}

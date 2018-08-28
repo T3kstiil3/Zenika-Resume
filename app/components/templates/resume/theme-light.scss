@@ -14,11 +14,6 @@
     .preview.theme-light .rendered {
         overflow: hidden;
     }
-    .preview.theme-light .presentation *,
-    .preview.theme-light .description * {
-        color: white !important;
-        line-height: normal !important;
-    }
     .layout .editor .preview {
         overflow: auto !important;
         height: auto !important;
@@ -28,6 +23,11 @@
     }
     .chunk-page-break {
         page-break-before: always !important;
+    }
+
+    .lastname {
+        font-size: 2.5em;
+        color: #B31835!important;
     }
 }
 
@@ -120,7 +120,9 @@
     }
     .chunk-page-break {
         page-break-before: always !important;
-        height: 0px;
+        height: 20px;
+        background: #B31835;
+        margin-bottom: 20px;
     }   
 
     .content {

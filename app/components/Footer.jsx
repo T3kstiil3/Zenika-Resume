@@ -59,7 +59,15 @@ export default class Footer extends Component {
   render() {
     let path = '';
 
-    if (this.props.metadata) {
+    if (this.props.path) {
+      path = this.props.path;
+    }
+    else if (this.props.metadata) {
+      if(this.props.metadata.firstname){
+        path = buildPath(this.props.metadata.name + ' ' + this.props.metadata.firstname + '');
+      }else {
+        path = buildPath(this.props.metadata.name);
+      }
       path = buildPath(this.props.metadata.name);
     }
 
