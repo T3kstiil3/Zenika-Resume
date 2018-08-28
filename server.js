@@ -11,6 +11,7 @@ const app = express();
 const api = express.Router();
 
 const pg = require('pg');
+const { Client } = require('pg');
 
 const buildPath = require('./build-path');
 
@@ -24,6 +25,16 @@ var databaseUrl = process.env.DATABASE_URL || 'postgres://localhost/resume';
 var googleId = process.env.GOOGLE_ID || require('./conf-google').id;
 var googleSecret = process.env.GOOGLE_SECRET || require('./conf-google').secret;
 var googleCallback = process.env.GOOGLE_CALLBACK || require('./conf-google').callback;
+
+let postgress_config = {
+  host: databaseUrl,
+  port: process.env.DATABASE_PORT || 5334,
+}
+
+if (process.env.DATABASE_USER) postgress_config.user = process.env.DATABASE_USER || 'postgres';
+if (process.env.DATABASE_PASSWORD) postgress_config.password = process.env.DATABASE_PASSWORD || 'changeme';
+
+const client = new Client(postgress_config)
 
 var isDev = !process.env.DATABASE_URL;
 
@@ -119,6 +130,7 @@ function ensureAuthenticated(req, res, next) {
 }
 
 function executeQueryWithCallback(query, params, response, callback) {
+
   pg.connect(databaseUrl, function (err, client, done) {
     try {
       if (!client) {
@@ -304,7 +316,26 @@ api.get('/resumes', (req, res) => {
   }
 
   executeQueryWithCallback(
-    'SELECT uuid, metadata, path, version, last_modified FROM resume ORDER BY path ASC, last_modified DESC',
+    'SELECT uuid, metadata, path, version, last_modified, owner FROM resume ORDER BY path ASC, last_modified DESC',
+    [],
+    res,
+    function (data) {
+      res.status(200).json(data.rows.map((row) => {
+        row.metadata = JSON.parse(row.metadata);
+        return row;
+      }));
+    });
+});
+
+api.get('/resumes/user/:owner', (req, res) => {
+
+  if (!isUserConnectedAndZenika(req) || !req.user.emails[0].value) {
+    res.status(401).json();
+    return;
+  }
+
+  executeQueryWithCallback(
+    `SELECT uuid, metadata, path, version, last_modified, owner FROM resume WHERE owner="${req.user.emails[0].value}" ORDER BY path ASC, last_modified DESC`,
     [],
     res,
     function (data) {

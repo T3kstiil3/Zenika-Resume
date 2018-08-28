@@ -2,7 +2,9 @@ import './scss/main.scss';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import App from './components/App.jsx';
+import Home from './components/Home.jsx';
 import { EventEmitter } from 'events';
 import localforage from 'localforage';
 import Store from './Store';
@@ -18,11 +20,16 @@ const controller = new Controller({ store }, events);
 
 require('offline-plugin/runtime').install();
 
-if((window.location.href + '').indexOf('?help') != -1){
+if ((window.location.href + '').indexOf('?help') != -1) {
   history.replaceState(null, 'zenika-resume', (window.location.href + '').split('?help')[0]);
 }
 
 ReactDOM.render(
-  <App version={appVersion} controller={controller} />,
+  <Router>
+    <div>
+      <Route exact path='/' component={Home} />
+      <Route path='/app' component={() => <App version={appVersion} controller={controller} />} />
+    </div>
+  </Router>,
   appElement
 );

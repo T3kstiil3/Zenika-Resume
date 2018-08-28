@@ -1,1 +1,1 @@
-CREATE TABLE resume (id serial primary key, content text, metadata text, uuid text, path text, version integer, last_modified timestamp);
+CREATE TABLE resume (id serial primary key, content text, metadata text, uuid text, path text, owner text, version integer, last_modified timestamp);

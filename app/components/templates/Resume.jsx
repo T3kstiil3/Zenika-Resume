@@ -158,6 +158,7 @@ export default class Resume extends BaseTemplate {
       )
     }
 
+    // theme default
     return (
       <div>
         <div className="logo"></div>
