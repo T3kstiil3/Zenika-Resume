@@ -86,8 +86,8 @@
     "webpack-merge": "0.8.3"
   },
   "dependencies": {
-    "@material-ui/core": "^3.0.0",
-    "@material-ui/icons": "^3.0.0",
+    "@material-ui/core": "^3.0.1",
+    "@material-ui/icons": "^3.0.1",
     "@tanepiper/webpack-robotstxt": "0.2.0",
     "babel-core": "6.6.4",
     "babel-loader": "6.2.4",
@@ -104,7 +104,7 @@
     "clean-webpack-plugin": "0.1.8",
     "codemirror": "5.12.0",
     "cookie-parser": "1.4.3",
-    "copy-webpack-plugin": "4.5.2",
+    "copy-webpack-plugin": "^4.5.2",
     "css-loader": "0.23.1",
     "deepmerge": "0.2.10",
     "emojione": "2.1.2",
@@ -136,6 +136,7 @@
     "markdown-it-mark": "2.0.0",
     "markdown-it-modify-token": "1.0.2",
     "markdown-it-sup": "1.0.0",
+    "material-icons": "^0.2.3",
     "mocha": "2.4.5",
     "mocha-circleci-reporter": "0.0.1",
     "moment": "2.14.1",
@@ -152,6 +153,7 @@
     "react-dom": "16.4.2",
     "react-intl": "2.4.0",
     "react-loader": "2.4.5",
+    "react-router-dom": "^4.3.1",
     "sass-loader": "3.1.2",
     "sinon": "1.17.3",
     "sjcl": "1.0.3",
@@ -164,9 +166,6 @@
     "webpack": "1.12.14",
     "webpack-dev-server": "1.14.1",
     "webpack-merge": "0.8.3"
-  },
-  "engines": {
-    "node": "^5.7"
   },
   "nyc": {
     "exclude": [

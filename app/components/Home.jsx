@@ -1,38 +1,60 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
+import Header from './Header';
+import MyResumes from './home/MyResumes';
+import LastResumes from './home/LastResumes';
 
-const classes = {
-  root: {
-    flexGrow: 1,
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#383D43' },
+    secondary: { main: '#B31835' },
   },
-  flex: {
-    flexGrow: 1,
+});
+
+const styles = theme => ({
+  appBar: {
+    position: 'relative',
   },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
+  icon: {
+    marginRight: theme.spacing.unit * 2,
   },
+  layout: {
+    width: 'auto',
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(1100 + theme.spacing.unit * 3 * 2)]: {
+      width: 1100,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+  },
+  cardGrid: {
+    padding: `${theme.spacing.unit * 8}px 0`,
+  },
+});
+
+function Home(props) {
+
+  const { classes } = props;
+
+  return (
+    <MuiThemeProvider theme={theme}>
+      <Header></Header>
+      <div className={classNames(classes.layout, classes.cardGrid)}>
+        <MyResumes></MyResumes>
+        <br/>
+        <LastResumes></LastResumes> 
+      </div>
+    </MuiThemeProvider>
+  )
+}
+
+Home.propTypes = {
+  classes: PropTypes.object.isRequired,
 };
 
-const Home = () => (
-  <div>
-    <AppBar position="static" color="secondary">
-      <Toolbar>
-        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="title" color="inherit" className={classes.flex}>
-          News
-        </Typography>
-        <Button color="inherit">Login</Button>
-      </Toolbar>
-    </AppBar>
-  </div>
-)
-export default Home
+export default withStyles(styles)(Home);

@@ -11,7 +11,6 @@ const app = express();
 const api = express.Router();
 
 const pg = require('pg');
-const { Client } = require('pg');
 
 const buildPath = require('./build-path');
 
@@ -26,15 +25,8 @@ var googleId = process.env.GOOGLE_ID || require('./conf-google').id;
 var googleSecret = process.env.GOOGLE_SECRET || require('./conf-google').secret;
 var googleCallback = process.env.GOOGLE_CALLBACK || require('./conf-google').callback;
 
-let postgress_config = {
-  host: databaseUrl,
-  port: process.env.DATABASE_PORT || 5334,
-}
-
 if (process.env.DATABASE_USER) postgress_config.user = process.env.DATABASE_USER || 'postgres';
 if (process.env.DATABASE_PASSWORD) postgress_config.password = process.env.DATABASE_PASSWORD || 'changeme';
-
-const client = new Client(postgress_config)
 
 var isDev = !process.env.DATABASE_URL;
 
@@ -66,6 +58,11 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(api);
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 function hasValidEmail(req) {
   var emails = req.user.emails
