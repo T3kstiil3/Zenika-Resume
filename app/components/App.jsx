@@ -126,8 +126,8 @@ class App extends Component {
     });
 
     this.props.controller.dispatch('action:init', {
-      id: window.location.pathname.slice(1),
-      secret: window.location.hash.slice(1)
+      id: window.location.hash.substr(window.location.hash.lastIndexOf('/') + 1),
+      secret: ''
     });
   }
 
@@ -135,21 +135,23 @@ class App extends Component {
     if (message) {
       this.state.messages.push(message);
     }
-
+    
     this.setState({
       loaded: true,
       document: doc,
       messages: this.state.messages
     });
 
-    if (!window.history.state || !window.history.state.uuid ||
-      (window.history.state && window.history.state.uuid &&
-        doc.get('uuid') !== window.history.state.uuid)
-    ) {
-      if (uri.indexOf('undefined') == -1) {
-        window.history.pushState({ uuid: doc.get('uuid') }, `Monod - ${doc.get('uuid')}`, uri);
-      }
-    }
+    console.log(window.history.state);
+
+    // if (!window.history.state || !window.history.state.uuid ||
+    //   (window.history.state && window.history.state.uuid &&
+    //     doc.get('uuid') !== window.history.state.uuid)
+    // ) {
+    //   if (uri.indexOf('undefined') == -1) {
+    //     window.history.pushState({ uuid: doc.get('uuid') }, `Monod - ${doc.get('uuid')}`, uri);
+    //   }
+    // }
   }
 
   updateContent(newContent) {

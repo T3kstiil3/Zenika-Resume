@@ -64,9 +64,9 @@ export default class Store {
    *
    */
   load(id, secret) {
+
     if (!id) {
       this.events.emit(Events.NO_DOCUMENT_ID, this.state);
-
       return Promise.resolve(this.state);
     }
 
@@ -77,7 +77,6 @@ export default class Store {
         if (null === document) {
           return Promise.reject(new Error('document not found'));
         }
-
         return Promise.resolve(Immutable.fromJS(document));
       })
       .catch(() => {
@@ -133,6 +132,8 @@ export default class Store {
     if (document.isNew()) {
       return Promise.resolve(this.state);
     }
+
+    console.log('UPPPPPPDATE')
 
     this._setState({
       document: new Document({

@@ -16,6 +16,7 @@ export default class Controller {
   }
 
   dispatch(name, data) {
+    console.log(name, data);
     this.events.emit(name, data);
   }
 

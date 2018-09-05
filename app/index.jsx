@@ -30,7 +30,7 @@ if ((window.location.href + '').indexOf('?help') != -1) {
 ReactDOM.render(
   <HashRouter>
     <div>
-      <Route exact path='/app' component={() => <App version={appVersion} controller={controller} />} />
+      <Route path='/app' component={() => <App version={appVersion} controller={controller} />} />
       <Route exact path='/' component={Home} />
       <Route exact path='/404' component={Page404} />
     </div>

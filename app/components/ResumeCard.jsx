@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom'
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -17,7 +18,8 @@ const styles = theme => ({
     },
     cardMedia: {
         backgroundPosition: 'top center',
-        paddingTop: '56.25%', // 16:9
+        paddingTop: '75%', // 16:9
+        filter: 'blur(2px)',
     },
     cardContent: {
         flexGrow: 1,
@@ -26,7 +28,7 @@ const styles = theme => ({
 
 function ResumeCard(props) {
 
-    const { classes } = props;
+    const { classes, data } = props;
 
     return (
         <div>
@@ -38,19 +40,23 @@ function ResumeCard(props) {
                 />
                 <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="headline" component="h2">
-                        Heading
+                        {data.metadata.firsname} {data.metadata.name}
                     </Typography>
                     <Typography>
-                        This is a media card. You can use this section to describe the content.
+                        {data.metadata.description}
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button variant="contained" color="primary">
-                        View
-                    </Button>
-                    <Button variant="contained" color="secondary">
-                        Edit
-                    </Button>
+                    <Link to={`app/${data.path}`}>
+                        <Button variant="contained" color="primary">
+                            View
+                        </Button>
+                    </Link>
+                    <Link to={`app/${data.uuid}`}>
+                        <Button variant="contained" color="secondary">
+                            Edit
+                        </Button>
+                    </Link>
                 </CardActions>
             </Card>
         </div>

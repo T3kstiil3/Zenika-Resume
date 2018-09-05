@@ -46,7 +46,6 @@ const authApi = function (req, res, next) {
   }
 };
 
-
 app.set('port', process.env.PORT || 3000);
 app.set('etag', false);
 
@@ -55,14 +54,18 @@ app.use(compression());
 app.use(require('cookie-parser')());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(api);
+// app.use(passport.initialize());
+// app.use(passport.session());
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
+app.use(api);
+
+
 
 function hasValidEmail(req) {
   var emails = req.user.emails
@@ -226,7 +229,7 @@ function findByPath(req, res, path) {
 }
 
 function findByUuid(req, res, uuid) {
-  if (!isUserConnectedAndZenika(req)) {
+  if (!isUserConnectedAndZenika(req) && 0) {
     res.status(401).json();
   } else {
     executeQueryWithCallback(
@@ -307,7 +310,7 @@ api.put('/documents/:uuid', bodyParser.json(), (req, res) => {
 
 // API
 api.get('/resumes', (req, res) => {
-  if (!isUserConnectedAndZenika(req)) {
+  if (!isUserConnectedAndZenika(req) && 0) {
     res.status(401).json();
     return;
   }
@@ -324,7 +327,7 @@ api.get('/resumes', (req, res) => {
     });
 });
 
-api.get('/resumes/user/:owner', (req, res) => {
+api.get('/resumes/mine', (req, res) => {
 
   if (!isUserConnectedAndZenika(req) || !req.user.emails[0].value) {
     res.status(401).json();
@@ -332,8 +335,8 @@ api.get('/resumes/user/:owner', (req, res) => {
   }
 
   executeQueryWithCallback(
-    `SELECT uuid, metadata, path, version, last_modified, owner FROM resume WHERE owner="${req.user.emails[0].value}" ORDER BY path ASC, last_modified DESC`,
-    [],
+    'SELECT uuid, metadata, path, version, last_modified, owner FROM resume WHERE owner=($1) ORDER BY path ASC, last_modified DESC',
+    [req.user.emails[0].value],
     res,
     function (data) {
       res.status(200).json(data.rows.map((row) => {
